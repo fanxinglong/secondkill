@@ -2,11 +2,15 @@ package com.kingfisher.controller;/**
  * Created by xinglongfan on 2018/1/3.
  */
 
+import com.kingfisher.domain.User;
 import com.kingfisher.result.CodeMsg;
 import com.kingfisher.result.Result;
+import com.kingfisher.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -17,6 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/demo")
 public class DemoController {
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 成功响应结果
@@ -57,5 +64,19 @@ public class DemoController {
     public String thymeleaf(Model model){
         model.addAttribute("name", "Mike");
         return "hello";
+    }
+
+    @RequestMapping("/user")
+    @ResponseBody
+    public Result<User> getUser(){
+        User user = userService.getUserById(1);
+        return Result.success(user);
+    }
+
+    @RequestMapping("/iuser")
+    @ResponseBody
+    public Result<Boolean> insertUser(){
+        boolean b = userService.insertUser();
+        return Result.success(b);
     }
 }
